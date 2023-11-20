@@ -79,6 +79,44 @@
         }
       }
     },
+    "/api/open/{apiToken}/express": {
+      "post": {
+        "description": "Express to article based on video content",
+        "parameters": [
+          {
+            "in": "path",
+            "name": "apiToken",
+            "description": "The API token associated with the user (e.g., /api/open/alzp32Ml2a2G)",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/ExpressArticleSchema"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Success to get summary",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/OpenAPIExpressResponse"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
     "/api/open/{apiToken}/subtitle": {
       "get": {
         "description": "Only returns the video subtitlesArray in detail",
@@ -164,6 +202,32 @@
           }
         }
       },
+      "ExpressArticleSchema": {
+        "type": "object",
+        "properties": {
+          "url": {
+            "type": "string"
+          },
+          "articleConfig": {
+            "type": "object",
+            "nullable": true,
+            "properties": {
+              "outputLanguage": {
+                "type": "string",
+                "nullable": true
+              },
+              "showEmoji": {
+                "type": "boolean",
+                "nullable": true
+              },
+              "isRefresh": {
+                "type": "boolean",
+                "nullable": true
+              }
+            }
+          }
+        }
+      },
       "OpenAPIChatResponse": {
         "type": "object",
         "properties": {
@@ -204,6 +268,36 @@
                 }
               }
             }
+          }
+        }
+      },
+      "OpenAPIExpressResponse": {
+        "type": "object",
+        "properties": {
+          "success": {
+            "type": "boolean"
+          },
+          "id": {
+            "type": "string",
+            "format": "uuid"
+          },
+          "service": {
+            "type": "string"
+          },
+          "sourceUrl": {
+            "type": "string"
+          },
+          "htmlUrl": {
+            "type": "string"
+          },
+          "costDuration": {
+            "type": "number"
+          },
+          "remainingTime": {
+            "type": "number"
+          },
+          "article": {
+            "type": "string"
           }
         }
       }
