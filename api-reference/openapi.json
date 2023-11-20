@@ -196,6 +196,48 @@
           }
         }
       }
+    },
+    "/api/open/{apiToken}/vision": {
+      "post": {
+        "description": "prompt image to generate text",
+        "parameters": [
+          {
+            "in": "path",
+            "name": "apiToken",
+            "description": "The API token associated with the user (e.g., /api/open/alzp32Ml2a2G)",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/PhotoVisionSchema"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Success to generate text",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "properties": {
+                    "text": {
+                      "type": "string"
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
     }
   },
   "components": {
@@ -469,6 +511,27 @@
           },
           "article": {
             "type": "string"
+          }
+        }
+      },
+      "PhotoVisionSchema": {
+        "type": "object",
+        "properties": {
+          "style": {
+            "type": "string",
+            "description": "The style of the generated text 'wechat', 'xhs', 'ppt'",
+            "example": "xhs"
+          },
+          "prompt": {
+            "type": "string"
+          },
+          "imageUrls": {
+            "required": true,
+            "type": "array",
+            "items": {
+              "type": "string"
+            },
+            "nullable": false
           }
         }
       }

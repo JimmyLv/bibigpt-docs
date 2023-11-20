@@ -93,7 +93,9 @@
         "api-reference/endpoint/summary-detail",
         "api-reference/endpoint/subtitle",
         "api-reference/endpoint/chat",
-        "api-reference/endpoint/express"
+        "api-reference/endpoint/express",
+        "api-reference/endpoint/vision",
+        "api-reference/endpoint/audio"
       ]
     }
   ],
