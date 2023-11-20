@@ -60,24 +60,21 @@
           "content": {
             "application/json": {
               "schema": {
-                "type": "object",
-                "properties": {
-                  "url": {
-                    "type": "string",
-                    "description": "The URL to the video  (e.g., ?url=https://www.bilibili.com/video/BV1Sk4y1x7r2)"
-                  },
-                  "question": {
-                    "type": "string",
-                    "description": "The question to ask"
-                  }
-                }
+                "$ref": "#/components/schemas/ChatSchema"
               }
             }
           }
         },
         "responses": {
           "200": {
-            "description": "success"
+            "description": "Success to get summary",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/OpenAPIChatResponse"
+                }
+              }
+            }
           }
         }
       }
@@ -113,6 +110,104 @@
       }
     }
   },
-  "components": {},
+  "components": {
+    "schemas": {
+      "Organization": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "string",
+            "format": "uuid"
+          },
+          "name": {
+            "type": "string"
+          },
+          "parent": {
+            "type": "string"
+          },
+          "createdAt": {
+            "type": "string",
+            "format": "date-time"
+          },
+          "updatedAt": {
+            "type": "string",
+            "format": "date-time"
+          }
+        }
+      },
+      "ChatSchema": {
+        "type": "object",
+        "properties": {
+          "url": {
+            "type": "string"
+          },
+          "question": {
+            "type": "string"
+          },
+          "history": {
+            "type": "array",
+            "items": {
+              "type": "array",
+              "items": {
+                "type": "string"
+              }
+            },
+            "nullable": true
+          },
+          "language": {
+            "type": "string",
+            "nullable": true
+          },
+          "includeDetail": {
+            "type": "boolean",
+            "nullable": true
+          }
+        }
+      },
+      "OpenAPIChatResponse": {
+        "type": "object",
+        "properties": {
+          "success": {
+            "type": "boolean"
+          },
+          "id": {
+            "type": "string",
+            "format": "uuid"
+          },
+          "service": {
+            "type": "string"
+          },
+          "sourceUrl": {
+            "type": "string"
+          },
+          "htmlUrl": {
+            "type": "string"
+          },
+          "costDuration": {
+            "type": "number"
+          },
+          "remainingTime": {
+            "type": "number"
+          },
+          "answer": {
+            "type": "string"
+          },
+          "sourceDocuments": {
+            "type": "array",
+            "items": {
+              "properties": {
+                "pageContent": {
+                  "type": "string"
+                },
+                "metadata": {
+                  "type": "object"
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+  },
   "tags": []
 }
