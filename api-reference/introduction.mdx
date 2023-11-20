@@ -1,0 +1,201 @@
+---
+title: 'Introduction'
+description: 'BibiGPT.co example section for showcasing API endpoints'
+---
+
+<Note>
+  BibiGPT's API is currently in beta. If you have any questions or feedback, please reach out to us at
+  [jimmylv@mofa.si](mailto:jimmylv@mofa.si?subject=BibiGPT.co%20API%20Feedback).
+</Note>
+
+# BibiGPT 开放 API (beta)
+
+<Card title="BibiGPT.co API Endpoints" icon="leaf" href="https://bibigpt.co/api/open/docs.json">
+  View the OpenAPI specification file
+</Card>
+
+## 一、获取专属 API 链接
+
+All API endpoints are authenticated using `apiToken` tokens and picked up from the endpoint directly.
+
+```shell
+https://bibigpt.co/api/open/{apiToken}
+```
+
+请在登录后，查看 [https://bibigpt.co/user/integration](https://bibigpt.co/user/integration) 页面，获取专属 API 链接🔗
+
+![Untitled](/images/api/Untitled.png)
+
+## 二、API 调用方法
+
+### 总结 [/api/open/[apiToken]](https://bibigpt.co/api/open/%5BapiToken%5D/chat)
+
+（支持 GET 和 POST 两种请求方式）
+
+![Untitled](/images/api/Untitled%201.png)
+
+![Untitled](/images/api/Untitled%202.png)
+
+### 问答 [/api/open/[apiToken]/chat](https://bibigpt.co/api/open/%5BapiToken%5D/chat)
+
+```tsx
+interface ChatContentParams {
+  url: string
+  question: string
+  # tuple for each [['Q1', 'A1'], ['Q2', 'A2']]
+  history?: [string, string][]
+  language?: string
+}
+```
+
+![Untitled](/images/api/Untitled%203.png)
+
+除了 `answer` 以外，还可以设置 `includeDetail` 参数，选择是否返回跟答案有关的 `sourceDocuments`
+
+![Untitled](/images/api/Untitled%204.png)
+
+如果需要连续提问的话，记得把上一次的 QA 问题和答案作为 history 上下文，从而提高下一次回答的准确性和连贯度（当然，这样所消耗的 token 时长也会加倍）
+
+![Untitled](/images/api/Untitled%205.png)
+
+### 字幕 [/api/open/[apiToken]/subtitle](https://bibigpt.co/api/open/%5BapiToken%5D/subtitle)
+
+相比于总结接口，由于少了请求 LLM 的时间，所以会快很多。
+
+![Untitled](/images/api/Untitled%206.png)
+
+### 文件 [/api/open/[apiToken]](https://bibigpt.co/api/open/%5BapiToken%5D/chat)
+
+BibiGPT API 支持自定义的音视频文件地址，给 API 一个文件下载链接就好，比如以下的 [https://a.jimmylv.cn/assets/music.mp3](https://a.jimmylv.cn/assets/music.mp3) （注意URL 路径以 `.mp3` 结尾）
+
+<aside>
+  💡 目前支持的类型包括 `mp3|mp4|m4a|m4s|wav|webm|mpga|aac|ogg|oga|flac|alac|wma|avi|mkv|mov|flv|3gp|mpeg|ts|ogv|vob` ，如果发现有还不支持的格式可以联系我！
+
+</aside>
+
+![Untitled](/images/api/Untitled%207.png)
+
+### AI 文案改写 [/api/open/[apiToken]/express](https://bibigpt.co/api/open/%5BapiToken%5D/express)
+
+<aside>
+  💡 受限于长文本上下文，Coming soon. [BibiGPT.co](http://BibiGPT.co) 网页版可先行体验效果。
+
+</aside>
+
+## 三、API 接口参数（目前仅支持「总结」API）
+
+### 3.1 可选配置参数 promptConfig
+
+1、promptConfig 只支持 POST 请求，作为 body 参数
+
+![Untitled](/images/api/Untitled%208.png)
+
+2、promptConfig 不填时的默认参数，可根据需求自行修改
+
+![Untitled](/images/api/Untitled%209.png)
+
+```json
+{
+  "showEmoji": true,
+  "showTimestamp": false,
+  "outlineLevel": 1,
+  "sentenceNumber": 5,
+  "detailLevel": 700,
+  "outputLanguage": "zh-CN"
+}
+```
+
+注意： `detailLevel` 对应「句子长短」，对应关系为 50，即 700/50=14（Web页面显示的数值）
+
+另外， 关于「输出语言」的对应关系为：
+
+```jsx
+{
+  English: 'en-US',
+  中文: 'zh-CN',
+  繁體中文: 'zh-TW',
+  日本語: 'ja-JP',
+  Italiano: 'it-IT',
+  Deutsch: 'de-DE',
+  Español: 'es-ES',
+  Français: 'fr-FR',
+  Nederlands: 'nl-NL',
+  한국어: 'ko-KR',
+  ភាសាខ្មែរ: 'km-KH',
+  हिंदी: 'hi-IN',
+}
+```
+
+3、promptConfig 中有一个特殊参数： `isRefresh` ，当它有值并为 `true` 时，才会忽略缓存
+
+举例，这是一个「_不输出emoji表情符号，显示时间戳，大纲层级为2，句子个数为3，句子长短为10，输出语言为英文，且强行刷新缓存_」的promptConfig：
+
+```json
+{
+  "showEmoji": false,
+  "showTimestamp": true,
+  "outlineLevel": 2,
+  "sentenceNumber": 3,
+  "detailLevel": 500,
+  "outputLanguage": "en-US",
+  "isRefresh": true
+}
+```
+
+### 3.2 limitation 限制条件
+
+作为 API 的 limitation 字段可以设置 `maxDuration` 最大时长，然后如果后台检测 url 所对应的音视频时长超过了maxDuration ，就返回 422 error 错误状态码
+
+```json
+{
+  "url": "https://www.bilibili.com/video/BV1Sk4y1x7r2",
+  "includeDetail": true,
+  "limitation": {
+    "maxDuration": 600
+  }
+}
+```
+
+![Untitled](/images/api/Untitled%2010.png)
+
+## 四、使用案例
+
+### 4.1 百度搜索
+
+![Untitled](/images/api/Untitled%2011.png)
+
+![Untitled](/images/api/Untitled%2012.png)
+
+### 4.2 微信助理
+
+[ChatGPT AI助力音视频一键总结，成功链接维客创云啦！](https://mp.weixin.qq.com/s/iFoi6Yx7QU1Oh042Az4hlQ)
+
+[https://github.com/zhayujie/chatgpt-on-wechat/issues/1417](https://github.com/zhayujie/chatgpt-on-wechat/issues/1417)
+
+[【看吗？买吗？】今天的苹果发布会相关视频多到爆炸，又无聊。\_哔哩哔哩\_bilibili](https://www.bilibili.com/video/BV1GN4y1X7Na)
+
+### 4.3 移动端 iOS 快捷指令
+
+【AI 视频笔记】BibiGPT 开放API & IFTTT 无限想象力
+
+[【AI 视频笔记】苹果备忘录：一键总结 B 站视频，联动快捷指令丨BibiGPT 开放API & IFTTT 无限想象力\_哔哩哔哩\_bilibili](https://www.bilibili.com/video/BV1ZN411z7Hc/)
+
+### 4.4 浏览器插件
+
+[【BibiGPT】浏览器插件：支持任意网页音视频内容的一键转录 & 总结\_哔哩哔哩\_bilibili](https://www.bilibili.com/video/BV1gN411W7NY)
+
+### 4.5 联动笔记软件
+
+语音输入 → Roam Research → AI 改写 → AI 回顾
+
+通过 [telegroam](https://github.com/JimmyLv/telegroam) 发送语音，然后用BibiGPT的API总结成文本，一键保存到Roam Research
+
+![Untitled](/images/api/Untitled%2013.png)
+
+![Untitled](/images/api/Untitled%2014.png)
+
+![Untitled](/images/api/Untitled%2015.png)
+
+---
+
+详细文档（完善中）：[https://aitodo.co/docs/bibigpt-api](https://aitodo.co/docs/bibigpt-api)

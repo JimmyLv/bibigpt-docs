@@ -1,0 +1,118 @@
+{
+  "openapi": "3.0.1",
+  "info": {
+    "title": "BibiGPT OpenAPI Spec",
+    "description": "音视频 AI 学习助理的开放 API，加速音视频内容的信息提取，借助 AI 直接采取行动。",
+    "version": "v1"
+  },
+  "servers": [
+    {
+      "url": "https://bibigpt.co"
+    }
+  ],
+  "paths": {
+    "/api/open/{apiToken}": {
+      "get": {
+        "description": "Returns the video summary and subtitlesArray in detail",
+        "parameters": [
+          {
+            "in": "path",
+            "name": "apiToken",
+            "description": "The API token associated with the user (e.g., /api/open/alzp32Ml2a2G)",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "in": "query",
+            "name": "url",
+            "description": "The URL to the video (e.g., ?url=https://www.bilibili.com/video/BV1Sk4y1x7r2)",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "success"
+          }
+        }
+      }
+    },
+    "/api/open/{apiToken}/chat": {
+      "post": {
+        "description": "Chat with video content, ask question with history and get answer",
+        "parameters": [
+          {
+            "in": "path",
+            "name": "apiToken",
+            "description": "The API token associated with the user (e.g., /api/open/alzp32Ml2a2G)",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "url": {
+                    "type": "string",
+                    "description": "The URL to the video  (e.g., ?url=https://www.bilibili.com/video/BV1Sk4y1x7r2)"
+                  },
+                  "question": {
+                    "type": "string",
+                    "description": "The question to ask"
+                  }
+                }
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "success"
+          }
+        }
+      }
+    },
+    "/api/open/{apiToken}/subtitle": {
+      "get": {
+        "description": "Only returns the video subtitlesArray in detail",
+        "parameters": [
+          {
+            "in": "path",
+            "name": "apiToken",
+            "description": "The API token associated with the user (e.g., /api/open/alzp32Ml2a2G)",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "in": "query",
+            "name": "url",
+            "description": "The URL to the video (e.g., ?url=https://www.bilibili.com/video/BV1Sk4y1x7r2)",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "success"
+          }
+        }
+      }
+    }
+  },
+  "components": {},
+  "tags": []
+}
