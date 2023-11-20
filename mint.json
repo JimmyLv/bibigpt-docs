@@ -15,6 +15,11 @@
       "to": "#07C983"
     }
   },
+  "metadata": {
+    "og:image": "https://bibigpt.co/og-image.png",
+    "og:description": "BibiGPT.co 开放API，打开你的无限想象力",
+    "article:publisher": "吕立青_JimmyLv"
+  },
   "topbarLinks": [
     {
       "name": "Support",
