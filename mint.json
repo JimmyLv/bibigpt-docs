@@ -2,8 +2,8 @@
   "$schema": "https://mintlify.com/schema.json",
   "name": "BibiGPT.co 开放 API",
   "logo": {
-    "dark": "/logo/app-icon.png",
-    "light": "/logo/app-icon.png"
+    "dark": "/logo/bibigpt-logo.png",
+    "light": "/logo/bibigpt-logo.png"
   },
   "favicon": "/favicon.png",
   "colors": {
@@ -46,6 +46,20 @@
       "name": "Blog",
       "icon": "newspaper",
       "url": "https://bibigpt.co/airss/docs"
+    }
+  ],
+  "redirects": [
+    {
+      "source": "/bibigpt-api",
+      "destination": "/api-reference/introduction"
+    },
+    {
+      "source": "/bibigpt-desktop",
+      "destination": "https://jimmylv.noto.so/bibigpt-desktop"
+    },
+    {
+      "source": "/bibigpt-extension",
+      "destination": "https://jimmylv.noto.so/bibigpt-extension"
     }
   ],
   "navigation": [
