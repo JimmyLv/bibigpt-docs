@@ -85,6 +85,7 @@
       "group": "API Endpoints",
       "pages": [
         "api-reference/endpoint/summary",
+        "api-reference/endpoint/summary-detail",
         "api-reference/endpoint/subtitle",
         "api-reference/endpoint/chat",
         "api-reference/endpoint/express"

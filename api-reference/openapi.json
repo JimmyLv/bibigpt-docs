@@ -13,7 +13,7 @@
   "paths": {
     "/api/open/{apiToken}": {
       "get": {
-        "description": "Returns the video summary and subtitlesArray in detail",
+        "description": "Returns the video summary",
         "parameters": [
           {
             "in": "path",
@@ -36,7 +36,50 @@
         ],
         "responses": {
           "200": {
-            "description": "success"
+            "description": "Success to get simple summary",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/OpenAPISimpleSummaryResponse"
+                }
+              }
+            }
+          }
+        }
+      },
+      "post": {
+        "description": "Returns the video summary and subtitlesArray in detail",
+        "parameters": [
+          {
+            "in": "path",
+            "name": "apiToken",
+            "description": "The API token associated with the user (e.g., /api/open/alzp32Ml2a2G)",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/ApiTokenParams"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Success to get summary",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/OpenAPISimpleSummaryResponse"
+                }
+              }
+            }
           }
         }
       }
@@ -142,7 +185,14 @@
         ],
         "responses": {
           "200": {
-            "description": "success"
+            "description": "Success to get subtitle",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/OpenAPISummaryResponse"
+                }
+              }
+            }
           }
         }
       }
@@ -225,6 +275,127 @@
                 "nullable": true
               }
             }
+          }
+        }
+      },
+      "ReturnDetail": {
+        "type": "object",
+        "properties": {
+          "title": {
+            "type": "string"
+          },
+          "descriptionText": {
+            "type": "string"
+          }
+        }
+      },
+      "ApiTokenParams": {
+        "type": "object",
+        "properties": {
+          "url": {
+            "type": "string"
+          },
+          "limitation": {
+            "type": "object",
+            "properties": {
+              "maxDuration": {
+                "type": "number",
+                "format": "int64",
+                "description": "in seconds"
+              }
+            }
+          },
+          "prompt": {
+            "type": "string"
+          },
+          "promptConfig": {
+            "type": "object",
+            "properties": {
+              "showEmoji:": {
+                "type": "boolean"
+              },
+              "showTimestamp": {
+                "type": "boolean"
+              },
+              "outlineLevel": {
+                "type": "number"
+              },
+              "sentenceNumber": {
+                "type": "number"
+              },
+              "detailLevel": {
+                "type": "number"
+              },
+              "outputLanguage": {
+                "type": "string"
+              }
+            }
+          },
+          "includeDetail": {
+            "type": "boolean"
+          }
+        }
+      },
+      "OpenAPISimpleSummaryResponse": {
+        "type": "object",
+        "properties": {
+          "success": {
+            "type": "boolean"
+          },
+          "id": {
+            "type": "string",
+            "format": "uuid"
+          },
+          "service": {
+            "type": "string"
+          },
+          "sourceUrl": {
+            "type": "string"
+          },
+          "htmlUrl": {
+            "type": "string"
+          },
+          "costDuration": {
+            "type": "number"
+          },
+          "remainingTime": {
+            "type": "number"
+          },
+          "summary": {
+            "type": "string"
+          }
+        }
+      },
+      "OpenAPISummaryResponse": {
+        "type": "object",
+        "properties": {
+          "success": {
+            "type": "boolean"
+          },
+          "id": {
+            "type": "string",
+            "format": "uuid"
+          },
+          "service": {
+            "type": "string"
+          },
+          "sourceUrl": {
+            "type": "string"
+          },
+          "htmlUrl": {
+            "type": "string"
+          },
+          "costDuration": {
+            "type": "number"
+          },
+          "remainingTime": {
+            "type": "number"
+          },
+          "summary": {
+            "type": "string"
+          },
+          "detail": {
+            "$ref": "#/components/schemas/ReturnDetail"
           }
         }
       },
