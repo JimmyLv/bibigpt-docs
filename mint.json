@@ -70,16 +70,20 @@
   "navigation": [
     {
       "group": "Get Started",
-      "pages": ["introduction", "quickstart", "development"]
-    },
-    {
-      "group": "Essentials",
       "pages": [
-        "essentials/markdown",
-        "essentials/code",
-        "essentials/images",
-        "essentials/settings",
-        "essentials/navigation"
+        "introduction",
+        "quickstart",
+        "mofasi_guide",
+        "batch_summary_guide",
+        "extension_guide",
+        "ios_shortcut_bibigpt_functionality_guide",
+        "price_guide",
+        "ai-command",
+        "subtitles",
+        "bibigpt_scenarios_guide",
+        "api_ifttt_guide",
+        "invite_guide",
+        "note"
       ]
     },
     {
